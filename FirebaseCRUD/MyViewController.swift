@@ -11,7 +11,9 @@ import Firebase
 import FirebaseAuthUI
 import FirebaseGoogleAuthUI
 
-class ViewController: UIViewController, FUIAuthDelegate {
+class MyViewController: UIViewController, FUIAuthDelegate {
+    
+    @IBOutlet weak var emailLabel: UILabel!
     
     var docIDs: [String] = [String]()
     var db: Firestore!
@@ -47,7 +49,7 @@ class ViewController: UIViewController, FUIAuthDelegate {
                     }
                 }
             })
-                        
+            
         }
         /*
         db.collection("users").getDocuments() { (querySnapshot, err) in
@@ -87,6 +89,7 @@ class ViewController: UIViewController, FUIAuthDelegate {
         print("SIGNING OUT!")
         do {
             try authUI.signOut()
+            emailLabel.text = "Not signed in"
         } catch {
             print("ERROR: " + error.localizedDescription)
         }
@@ -105,6 +108,7 @@ class ViewController: UIViewController, FUIAuthDelegate {
         // handle user and error as necessary
         if let uid = user?.uid {
             print("SIGNED IN: " + uid)
+            emailLabel.text = authUI.auth?.currentUser?.email
             // Add a new document for the user
             var ref: DocumentReference? = nil
             ref = db.collection("users").addDocument(data: [
