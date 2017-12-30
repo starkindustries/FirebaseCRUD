@@ -131,6 +131,15 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     
     //////////////////////////
     // Create Data
+    @IBAction func updateFile(segue: UIStoryboardSegue) {
+        print("UPDATE FILE GOT HERE!")
+        let source = segue.source as! UpdateFileTableViewController
+    }
+    
+    @IBAction func cancelUpdateFile(segue: UIStoryboardSegue) {
+        // Do nothing
+    }
+    
     @IBAction func createData() {
         // Add a new document with a generated ID
         var ref: DocumentReference? = nil
@@ -244,6 +253,8 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             dest.userId = userId
             dest.email = email
             dest.username = username
+        } else if segue.identifier == Constants.newFileSegueId {
+            //let dest = segue.destination.childViewControllers.first as? UpdateFileTableViewController
         }
     }
     

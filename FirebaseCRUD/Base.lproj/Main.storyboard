@@ -6,10 +6,11 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--FirebaseCRUD-->
+        <!--Filebase-->
         <scene sceneID="pvg-hr-qh4">
             <objects>
                 <tableViewController id="lqq-yt-1Du" customClass="FilesTableViewController" customModule="FirebaseCRUD" customModuleProvider="target" sceneMemberID="viewController">
@@ -64,8 +65,12 @@
                             <outlet property="delegate" destination="lqq-yt-1Du" id="3wf-tm-bW8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="FirebaseCRUD" id="AUe-Wk-Hwz">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="uGh-pq-Poa"/>
+                    <navigationItem key="navigationItem" title="Filebase" id="AUe-Wk-Hwz">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="uGh-pq-Poa">
+                            <connections>
+                                <segue destination="F0h-u0-PEh" kind="showDetail" identifier="AddNewFileSegue" id="ACO-pX-uCm"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edl-iW-NsQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -252,6 +257,154 @@
                 <exit id="vln-aG-TSQ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1606" y="468"/>
+        </scene>
+        <!--Add/Edit File-->
+        <scene sceneID="aJc-dQ-zvo">
+            <objects>
+                <tableViewController id="4fk-0W-pav" customClass="UpdateFileTableViewController" customModule="FirebaseCRUD" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="3kj-yX-2B0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection headerTitle="Filename" id="Uuo-1h-PO4">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="vOp-ve-hvb">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vOp-ve-hvb" id="7Me-pM-czI">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Filename" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5QN-fl-g2l">
+                                                    <rect key="frame" x="16" y="11" width="343" height="22"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5QN-fl-g2l" secondAttribute="trailing" id="0jJ-Od-oou"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5QN-fl-g2l" secondAttribute="bottom" id="90q-zb-KkD"/>
+                                                <constraint firstItem="5QN-fl-g2l" firstAttribute="leading" secondItem="7Me-pM-czI" secondAttribute="leadingMargin" id="N3T-nC-LRT"/>
+                                                <constraint firstItem="5QN-fl-g2l" firstAttribute="top" secondItem="7Me-pM-czI" secondAttribute="topMargin" id="Yc5-wI-qpm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="File Data" id="UBT-1n-X81">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="100" id="fTt-vU-k8s">
+                                        <rect key="frame" x="0.0" y="155.5" width="375" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fTt-vU-k8s" id="w5E-MZ-7bA">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="G4F-Lw-gHS">
+                                                    <rect key="frame" x="16" y="11" width="343" height="78"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="G4F-Lw-gHS" firstAttribute="top" secondItem="w5E-MZ-7bA" secondAttribute="topMargin" id="G7l-LS-XgE"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="G4F-Lw-gHS" secondAttribute="bottom" id="T8x-ye-6Gh"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="G4F-Lw-gHS" secondAttribute="trailing" id="luJ-qi-01P"/>
+                                                <constraint firstItem="G4F-Lw-gHS" firstAttribute="leading" secondItem="w5E-MZ-7bA" secondAttribute="leadingMargin" id="qBc-EP-Xdu"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="File ID" id="hSv-bF-SmU">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="pIH-w7-5RX" style="IBUITableViewCellStyleDefault" id="rtp-Nq-Ahy">
+                                        <rect key="frame" x="0.0" y="311.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rtp-Nq-Ahy" id="EqA-Mh-d3M">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pIH-w7-5RX">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="XIR-wk-F0w">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="Dg5-lu-5Oo" style="IBUITableViewCellStyleDefault" id="8c2-YC-EBv">
+                                        <rect key="frame" x="0.0" y="391.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8c2-YC-EBv" id="ux4-dO-08P">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="SAVE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dg5-lu-5Oo">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="VKx-Md-lM9" kind="unwind" unwindAction="updateFileWithSegue:" id="RL7-BC-M2t"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="4fk-0W-pav" id="22A-ti-RVT"/>
+                            <outlet property="delegate" destination="4fk-0W-pav" id="zdS-Dl-cXU"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Add/Edit File" id="BBK-dS-Swl">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="6mE-EM-4ja">
+                            <connections>
+                                <segue destination="VKx-Md-lM9" kind="unwind" unwindAction="cancelUpdateFileWithSegue:" id="49q-iv-RV0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="fileIdLabel" destination="pIH-w7-5RX" id="QHt-Oi-n7c"/>
+                        <outlet property="filedataTextView" destination="G4F-Lw-gHS" id="aIG-J8-3Cp"/>
+                        <outlet property="filenameTextField" destination="5QN-fl-g2l" id="NhS-gn-Bi4"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YV9-01-RDC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="VKx-Md-lM9" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="3089" y="817"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VM2-YU-T4h">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="F0h-u0-PEh" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bXh-Ig-tbx">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4fk-0W-pav" kind="relationship" relationship="rootViewController" id="6mJ-Xd-jvJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Qb-1n-z0G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2337.5999999999999" y="816.79160419790117"/>
         </scene>
     </scenes>
 </document>
