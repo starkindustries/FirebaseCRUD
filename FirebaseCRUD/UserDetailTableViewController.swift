@@ -9,13 +9,21 @@
 import UIKit
 
 class UserDetailTableViewController: UITableViewController {
-        
+    
+    @IBOutlet weak var usernameCell: UITableViewCell?
     @IBOutlet weak var emailCell: UITableViewCell?
-    var email: String?
+    @IBOutlet weak var userIdCell: UITableViewCell?
+    
+    var username: String?
+    var email: String?    
+    var userId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        usernameCell?.textLabel?.text = username
         emailCell?.textLabel?.text = email
+        userIdCell?.textLabel?.text = userId
     }
     
     override func didReceiveMemoryWarning() {

@@ -15,16 +15,19 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     
     var db: Firestore!
     var authUI: FUIAuth!
+    
     var docIDs: [String] = [String]()
-    var userId: String?
+    
+    var username: String?
     var email: String?
+    var userId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        db = Firestore.firestore()
         
-        // Initialize FirebaseAuth
+        // Initialize Firebase and FirebaseAuth
+        db = Firestore.firestore()
         authUI = FUIAuth.defaultAuthUI()
         // You need to adopt a FUIAuthDelegate protocol to receive callback
         authUI?.delegate = self
@@ -49,7 +52,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("VIEW DID APPEAR")
+        // Check if user is signed in.
         signIn()
     }
     
@@ -57,33 +60,39 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     // MARK:- FUIAuthDelegate and Sign in and out functions
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
         // handle user and error as necessary
-        if let uid = user?.uid {
-            print("SIGNED IN: " + uid)
-            email = authUI.auth?.currentUser?.email
-            // Add a new document for the user
-            var ref: DocumentReference? = nil
-            ref = db.collection("users").addDocument(data: [
-                "userId": authUI.auth?.currentUser?.uid ?? "",
-                "email": authUI.auth?.currentUser?.email ?? "",
-                "name": authUI.auth?.currentUser?.displayName ?? "Anonymous"
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Document added with ID: \(ref!.documentID)")
-                }
+        guard let uid = user?.uid else { return }
+        
+        userId = uid
+        email = authUI.auth?.currentUser?.email
+        username = authUI.auth?.currentUser?.displayName
+        
+        // Add a new document for the user
+        var ref: DocumentReference? = nil
+        ref = db.collection("users").addDocument(data: [
+            "userId": authUI.auth?.currentUser?.uid ?? "",
+            "email": authUI.auth?.currentUser?.email ?? "",
+            "name": authUI.auth?.currentUser?.displayName ?? "Anonymous"
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
             }
-            self.tableView.reloadData()
         }
+        self.tableView.reloadData()
+        
     }
     
     // Sign in
     // How to check if user has valid Auth Session Firebase iOS?
     // https://stackoverflow.com/questions/37738366/how-to-check-if-user-has-valid-auth-session-firebase-ios
     func signIn() {
-        if let email = Auth.auth().currentUser?.email {
+        if let user = Auth.auth().currentUser {
             // User logged in
-            self.email = email
+            userId = user.uid
+            email = user.email
+            username = user.displayName
+
             self.tableView.reloadData()
         } else {
             // User Not logged in. Present AuthUI controller
@@ -100,6 +109,8 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         do {
             try authUI.signOut()
             email = "Tap to sign in"
+            userId = ""
+            username = ""
             self.tableView.reloadData()
         } catch {
             print("ERROR: " + error.localizedDescription)
@@ -155,20 +166,20 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     //////////////////////////
     // Read Data
     private func readData() {
-        if let uid = authUI.auth?.currentUser?.uid {
-            let doc = db.collection("users").document(uid)
-            print("DOC: " + doc.debugDescription)
-            doc.getDocument(completion: { (querySnapshot, error) in
-                if let error = error {
-                    print("ERROR: " + error.localizedDescription)
-                } else {
-                    if let id = querySnapshot?.documentID {
-                        print("ID: " + id)
-                        self.userId = id
-                    }
+        guard let uid = authUI.auth?.currentUser?.uid else { return }
+        let doc = db.collection("users").document(uid)
+        print("DOC: " + doc.debugDescription)
+        doc.getDocument(completion: { (querySnapshot, error) in
+            if let error = error {
+                print("ERROR: " + error.localizedDescription)
+            } else {
+                if let id = querySnapshot?.documentID {
+                    print("ID: " + id)
+                    self.userId = id
                 }
-            })
-        }
+            }
+        })
+        
     }
     
     //////////////////////////
@@ -193,7 +204,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
@@ -222,7 +233,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             return cell
         }
     }
-
+    
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -230,10 +241,12 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         // Pass the selected object to the new view controller.
         if segue.identifier == Constants.userDetailSegueId {
             let dest = segue.destination as! UserDetailTableViewController
+            dest.userId = userId
             dest.email = email
+            dest.username = username
         }
     }
-
+    
     // didReceiveMemoryWarning()
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
