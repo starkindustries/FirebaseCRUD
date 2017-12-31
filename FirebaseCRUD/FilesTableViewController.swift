@@ -134,10 +134,37 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     @IBAction func updateFile(segue: UIStoryboardSegue) {
         print("UPDATE FILE GOT HERE!")
         let source = segue.source as! UpdateFileTableViewController
+        let filename = source.filenameTextField?.text
+        let filedata = source.filedataTextView?.text
+        if let id = source.fileId {
+            // update file
+        } else {
+            createFile(filename: filename, filedata: filedata)
+        }
     }
     
     @IBAction func cancelUpdateFile(segue: UIStoryboardSegue) {
         // Do nothing
+    }
+    
+    func createFile(filename: String?, filedata: String?) {
+        guard let filename = filename, let filedata = filedata else {
+            print("Error createFile(): Empty data set")
+            return
+        }
+        guard let userId = authUI.auth?.currentUser?.uid else {
+            print("Error createFile(): User is not signed in.")
+            return
+        }
+        let documentData: [String: Any] = ["userId": userId, "filename": filename, "data": filedata]
+        var docRef: DocumentReference? = nil
+        docRef = db.collection("files").addDocument(data: documentData) { (error) in
+            if let error = error {
+                print("Error adding file: \(error)")
+            } else {
+                print("File added with ID: \(docRef!.documentID)")
+            }
+        }
     }
     
     @IBAction func createData() {
@@ -174,7 +201,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     
     //////////////////////////
     // Read Data
-    private func readData() {
+    func readData() {
         guard let uid = authUI.auth?.currentUser?.uid else { return }
         let doc = db.collection("users").document(uid)
         print("DOC: " + doc.debugDescription)
