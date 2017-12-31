@@ -22,8 +22,11 @@ class UpdateFileTableViewController: UITableViewController {
         if let fid = fileId {
             self.navigationItem.title = "Edit File"
             fileIdLabel?.text = fid
+            fileIdLabel?.textColor = UIColor.black
         } else {
-            self.navigationItem.title = "Add New File"            
+            self.navigationItem.title = "Add New File"
+            fileIdLabel?.text = "This will be auto-generated"
+            fileIdLabel?.textColor = UIColor.gray
         }
     }
 
