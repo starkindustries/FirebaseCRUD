@@ -16,7 +16,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
     var db: Firestore!
     var authUI: FUIAuth!
     
-    var docIDs: [String] = [String]()
+    var files: [File] = [File]()
     
     var username: String?
     var email: String?
@@ -34,26 +34,14 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         // Set the providers
         let providers: [FUIAuthProvider] = [FUIGoogleAuth()]
         authUI?.providers = providers
-        
-        readData()
-        /*
-         db.collection("users").getDocuments() { (querySnapshot, err) in
-         if let err = err {
-         print("**ERROR GETTING DOCUMENTS**: \(err)")
-         } else {
-         for document in querySnapshot!.documents {
-         print("\(document.documentID) => \(document.data())")
-         self.docIDs.append(document.documentID)
-         }
-         }
-         print("doc IDs: " + self.docIDs.debugDescription)
-         }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Check if user is signed in.
         signIn()
+        readData()
+        readMoreData()
     }
     
     ////////////////////////////////////////
@@ -127,10 +115,8 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         return false
     }
     
-    // MARK:- CRUD Functions
+    // MARK:- @IBActions
     
-    //////////////////////////
-    // Create Data
     @IBAction func updateFile(segue: UIStoryboardSegue) {
         print("UPDATE FILE GOT HERE!")
         let source = segue.source as! UpdateFileTableViewController
@@ -147,6 +133,10 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         // Do nothing
     }
     
+    // MARK:- CRUD Functions
+    
+    //////////////////////////
+    // Create Data
     func createFile(filename: String?, filedata: String?) {
         guard let filename = filename, let filedata = filedata else {
             print("Error createFile(): Empty data set")
@@ -167,38 +157,6 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         }
     }
     
-    @IBAction func createData() {
-        // Add a new document with a generated ID
-        var ref: DocumentReference? = nil
-        ref = db.collection("users").addDocument(data: [
-            "userId": authUI.auth?.currentUser?.uid ?? "",
-            "first": "Ada",
-            "last": "Lovelace",
-            "born": 1815
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
-        
-        // Add a second document with a generated ID.
-        ref = db.collection("users").addDocument(data: [
-            "userId": Auth.auth().currentUser?.uid ?? "",
-            "first": "Alan",
-            "middle": "Mathison",
-            "last": "Turing",
-            "born": 1912
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
-    }
-    
     //////////////////////////
     // Read Data
     func readData() {
@@ -215,7 +173,25 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
                 }
             }
         })
-        
+    }
+    
+    func readMoreData() {
+        db.collection("files").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("ERROR GETTING DOCUMENTS: \(err)")
+            } else {
+                self.files = [File]()
+                for document in querySnapshot!.documents {
+                    print("DOCUMENT: \(document.documentID) => \(document.data())")
+                    let data: [String: Any] = document.data()                    
+                    print("FILENAME: \(String(describing: data["filename"]))")
+                    let file = File(data: data)
+                    print(file.description)
+                    self.files.append(file)
+                }
+                self.tableView.reloadData()
+            }
+        }
     }
     
     //////////////////////////
@@ -245,13 +221,13 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         if section == 0 {
             return 1
         } else {
-            return 2
+            return files.count
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return ""
+            return "Signed in as"
         } else {
             return "Files"
         }
@@ -265,7 +241,8 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             cell.textLabel?.text = email
             return cell
         } else { // Files Section
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)            
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)
+            cell.textLabel?.text = self.files[indexPath.row].filename
             return cell
         }
     }
