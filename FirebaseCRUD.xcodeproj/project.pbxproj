@@ -20,6 +20,7 @@
 		235AF41D1FF7643000B4F981 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235AF41C1FF7643000B4F981 /* Constants.swift */; };
 		235AF41F1FF7C22A00B4F981 /* UpdateFileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235AF41E1FF7C22A00B4F981 /* UpdateFileTableViewController.swift */; };
 		235AF4211FF8914A00B4F981 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235AF4201FF8914A00B4F981 /* File.swift */; };
+		236D6D8F1FFA270E00016EC2 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D6D8E1FFA270E00016EC2 /* FileManager.swift */; };
 		6865B0F2D485CF02A2460FAF /* Pods_FirebaseCRUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32208CD89F0984707A9C311C /* Pods_FirebaseCRUD.framework */; };
 		954FB24F981C8F5E543A8416 /* Pods_FirebaseCRUDUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 405EA5F9B2F3717300F4723F /* Pods_FirebaseCRUDUITests.framework */; };
 		C7E68371CB2C823DB150F525 /* Pods_FirebaseCRUDTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AD783E1E2D05B8E85E53F33 /* Pods_FirebaseCRUDTests.framework */; };
@@ -63,6 +64,7 @@
 		235AF41C1FF7643000B4F981 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		235AF41E1FF7C22A00B4F981 /* UpdateFileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFileTableViewController.swift; sourceTree = "<group>"; };
 		235AF4201FF8914A00B4F981 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		236D6D8E1FFA270E00016EC2 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		2B103AD5AF9C3E0AB4BF9B43 /* Pods-FirebaseCRUD.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseCRUD.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseCRUD/Pods-FirebaseCRUD.debug.xcconfig"; sourceTree = "<group>"; };
 		32208CD89F0984707A9C311C /* Pods_FirebaseCRUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseCRUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B2A10C5624C8388243BC5C3 /* Pods-FirebaseCRUDUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseCRUDUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseCRUDUITests/Pods-FirebaseCRUDUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				235AF4181FF73C3B00B4F981 /* FileDetailTableViewController.swift */,
 				235AF41E1FF7C22A00B4F981 /* UpdateFileTableViewController.swift */,
 				235AF4201FF8914A00B4F981 /* File.swift */,
+				236D6D8E1FFA270E00016EC2 /* FileManager.swift */,
 				235AF41C1FF7643000B4F981 /* Constants.swift */,
 				232140AF1FF0CBC100701128 /* Assets.xcassets */,
 				232140B11FF0CBC100701128 /* LaunchScreen.storyboard */,
@@ -509,6 +512,7 @@
 				232140A91FF0CBC100701128 /* AppDelegate.swift in Sources */,
 				235AF41F1FF7C22A00B4F981 /* UpdateFileTableViewController.swift in Sources */,
 				235AF41B1FF7619700B4F981 /* UserDetailTableViewController.swift in Sources */,
+				236D6D8F1FFA270E00016EC2 /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
