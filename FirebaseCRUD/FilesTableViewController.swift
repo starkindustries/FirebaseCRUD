@@ -147,6 +147,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         let filedata = source.filedataTextView?.text
         if let id = source.fileId {
             // update file
+            FileManager.sharedInstance.updateFile(fileId: id, filename: filename, filedata: filedata)
         } else {
             FileManager.sharedInstance.createFile(filename: filename, filedata: filedata)
         }
@@ -214,8 +215,9 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
                 let dest = segue.destination as! FileDetailTableViewController
                 dest.filename = file.filename
                 dest.fileData = file.filedata
+                dest.fileId = file.fileId
             }
-        }
+        } 
     }
     
     // didReceiveMemoryWarning()

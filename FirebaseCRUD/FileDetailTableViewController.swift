@@ -10,11 +10,13 @@ import UIKit
 
 class FileDetailTableViewController: UITableViewController {
     
+    var fileId: String?
     var filename: String?
     var fileData: String?
     
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
+        self.navigationItem.title = filename
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,6 +41,14 @@ class FileDetailTableViewController: UITableViewController {
         return 1
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 44
+        } else {
+            return 200
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)
         // Configure the cell...
@@ -54,14 +64,20 @@ class FileDetailTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == Constants.editFileSegueId {
+            let dest = segue.destination.childViewControllers.first as! UpdateFileTableViewController
+            dest.fileId = fileId
+            dest.filename = filename
+            dest.filedata = fileData
+        }
     }
-    */
+
 
 }

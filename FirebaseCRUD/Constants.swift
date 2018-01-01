@@ -14,4 +14,5 @@ struct Constants {
     static let fileDetailSegueId = "FileDetailSegue"
     static let userDetailSegueId = "UserDetailSegue"
     static let newFileSegueId = "AddNewFileSegue"
+    static let editFileSegueId = "EditFileSegue"
 }

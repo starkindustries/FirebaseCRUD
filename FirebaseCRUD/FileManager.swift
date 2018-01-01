@@ -90,7 +90,7 @@ class FileManager {
             }
             self.files = [File]()
             self.files = documents.map { (document) -> File in
-                return File(data: document.data())
+                return File(data: document.data(), id: document.documentID)
             }
             self.reloadTableDelegate?.reloadTable()
         }
@@ -106,22 +106,25 @@ class FileManager {
     
     //////////////////////////
     // Update Data
-    public func updateFile(fileId: String) {
+    // To update some fields of a document without overwriting the entire document, use the update() method:
+    // https://firebase.google.com/docs/firestore/manage-data/add-data#update-data
+    // To create or overwrite a single document, use the set() method:
+    // https://firebase.google.com/docs/firestore/manage-data/add-data#set_a_document
+    public func updateFile(fileId: String?, filename: String?, filedata: String?) {
         guard let userId = self.userId else {
             print("Error updateFile(_:): User is not signed in.")
             return
         }
-        /*
-         db.collection("users").document(userId).updateData([
-         "userId": authUI.auth?.currentUser?.uid ?? "",
-         "email": authUI.auth?.currentUser?.email ?? "",
-         "name": authUI.auth?.currentUser?.displayName ?? "Anonymous"
-         ]) { (error) in
-         if let error = error {
-         print("ERROR: " + error.localizedDescription)
-         } else {
-         print("Data saved!.")
-         }
-         }*/
+        guard let fileId = fileId else {
+            fatalError("updateFile(): No file id provided.")
+        }
+        let file = File(uid: userId, name: filename, data: filedata, id: fileId)
+        db.collection("files").document(fileId).updateData(file.getDictionaryData()) { (error) in
+            if let error = error {
+                print("ERROR updateFile(): " + error.localizedDescription)
+            } else {
+                print("Data saved!")
+            }
+        }        
     }
 }

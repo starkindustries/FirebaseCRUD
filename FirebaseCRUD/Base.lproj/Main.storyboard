@@ -77,7 +77,7 @@
             </objects>
             <point key="canvasLocation" x="814" y="817"/>
         </scene>
-        <!--File Detail Table View Controller-->
+        <!--Title-->
         <scene sceneID="bnN-3p-yEE">
             <objects>
                 <tableViewController storyboardIdentifier="FileDetailTableViewController" id="cnF-yw-2Ka" customClass="FileDetailTableViewController" customModule="FirebaseCRUD" customModuleProvider="target" sceneMemberID="viewController">
@@ -109,6 +109,13 @@
                             <outlet property="delegate" destination="cnF-yw-2Ka" id="OAM-Ru-oPD"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="EsK-AA-f6s">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="47o-8g-3Ko">
+                            <connections>
+                                <segue destination="F0h-u0-PEh" kind="showDetail" identifier="EditFileSegue" id="4Nk-d8-5XV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GBK-nL-KdQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -386,7 +393,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YV9-01-RDC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="VKx-Md-lM9" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3089" y="817"/>
+            <point key="canvasLocation" x="3268" y="817"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="VM2-YU-T4h">
@@ -404,7 +411,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Qb-1n-z0G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2337.5999999999999" y="816.79160419790117"/>
+            <point key="canvasLocation" x="2414" y="816"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="4Nk-d8-5XV"/>
+    </inferredMetricsTieBreakers>
 </document>

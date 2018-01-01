@@ -15,6 +15,8 @@ class UpdateFileTableViewController: UITableViewController {
     @IBOutlet weak var filedataTextView: UITextView?
     
     var fileId: String?
+    var filename: String?
+    var filedata: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,8 @@ class UpdateFileTableViewController: UITableViewController {
             self.navigationItem.title = "Edit File"
             fileIdLabel?.text = fid
             fileIdLabel?.textColor = UIColor.black
+            filenameTextField?.text = filename
+            filedataTextView?.text = filedata
         } else {
             self.navigationItem.title = "Add New File"
             fileIdLabel?.text = "This will be auto-generated"

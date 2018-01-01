@@ -14,6 +14,7 @@ struct File: CustomStringConvertible {
         case userId, filename, filedata
     }
     
+    var fileId: String?
     var userId: String?
     var filename: String?
     var filedata: String?
@@ -26,10 +27,20 @@ struct File: CustomStringConvertible {
         filedata = data
     }
     
+    init(uid: String?, name: String?, data: String?, id: String?) {
+        self.init(uid: uid, name: name, data: data) 
+        self.fileId = id
+    }
+    
     init(data: [String: Any]) {
         userId = data[field.userId.rawValue] as? String
         filename = data[field.filename.rawValue] as? String
         filedata = data[field.filedata.rawValue] as? String
+    }
+    
+    init(data: [String: Any], id: String?) {
+        self.init(data: data)
+        self.fileId = id
     }
     
     func getDictionaryData() -> [String: Any] {
