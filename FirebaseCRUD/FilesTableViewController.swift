@@ -11,12 +11,13 @@ import Firebase
 import FirebaseAuthUI
 import FirebaseGoogleAuthUI
 
-class FilesTableViewController: UITableViewController, FUIAuthDelegate {
-    
-    var db: Firestore!
+protocol ReloadTableProtocol {
+    func reloadTable()
+}
+
+class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTableProtocol {
+        
     var authUI: FUIAuth!
-    
-    var files: [File] = [File]()
     
     var username: String?
     var email: String?
@@ -26,27 +27,53 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        // Initialize Firebase and FirebaseAuth
-        db = Firestore.firestore()
+        // Initialize FirebaseAuth        
         authUI = FUIAuth.defaultAuthUI()
         // You need to adopt a FUIAuthDelegate protocol to receive callback
         authUI?.delegate = self
         // Set the providers
         let providers: [FUIAuthProvider] = [FUIGoogleAuth()]
         authUI?.providers = providers
+        
+        // Set TableReloadDelegate. This lets FileManager reload this table when changes occur.
+        FileManager.sharedInstance.reloadTableDelegate = self
+        
+        // Check if user is already signed in
+        if let user = Auth.auth().currentUser {
+            // User logged in
+            userId = user.uid
+            email = user.email
+            username = user.displayName
+            
+            FileManager.sharedInstance.userId = userId
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Check if user is signed in.
-        signIn()
-        readData()
-        readMoreData()
+        checkSignIn()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        FileManager.sharedInstance.addFileListener()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        FileManager.sharedInstance.removeFileListener()
+    }
+    
+    // protocol ReloadTableProtocol
+    func reloadTable() {
+        self.tableView.reloadData()
     }
     
     ////////////////////////////////////////
     // MARK:- FUIAuthDelegate and Sign in and out functions
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
+        print("FIREBASE AUTH authUI(_:,didSignInWith:)")
         // handle user and error as necessary
         guard let uid = user?.uid else { return }
         
@@ -54,37 +81,33 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         email = authUI.auth?.currentUser?.email
         username = authUI.auth?.currentUser?.displayName
         
-        // Add a new document for the user
-        var ref: DocumentReference? = nil
-        ref = db.collection("users").addDocument(data: [
-            "userId": authUI.auth?.currentUser?.uid ?? "",
-            "email": authUI.auth?.currentUser?.email ?? "",
-            "name": authUI.auth?.currentUser?.displayName ?? "Anonymous"
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
-        self.tableView.reloadData()
+        FileManager.sharedInstance.userId = userId
         
+        // Add a new document for the user
+        FileManager.sharedInstance.addNewUser(userId: userId, email: email, name: username)
+        
+        reloadTable()
     }
     
     // Sign in
     // How to check if user has valid Auth Session Firebase iOS?
     // https://stackoverflow.com/questions/37738366/how-to-check-if-user-has-valid-auth-session-firebase-ios
-    func signIn() {
+    func isSignedIn() -> Bool {
+        return (Auth.auth().currentUser != nil)
+    }
+    
+    func checkSignIn() {
+        print("FIREBASE AUTH signIn()")
         if let user = Auth.auth().currentUser {
             // User logged in
             userId = user.uid
             email = user.email
             username = user.displayName
-
-            self.tableView.reloadData()
+            
+            FileManager.sharedInstance.userId = userId
         } else {
             // User Not logged in. Present AuthUI controller
-            let authViewController = authUI!.authViewController()
+            let authViewController = authUI.authViewController()
             self.present(authViewController, animated: true){
                 print("AUTH VIEW PRESENTED!")
             }
@@ -125,91 +148,12 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         if let id = source.fileId {
             // update file
         } else {
-            createFile(filename: filename, filedata: filedata)
+            FileManager.sharedInstance.createFile(filename: filename, filedata: filedata)
         }
     }
     
     @IBAction func cancelUpdateFile(segue: UIStoryboardSegue) {
         // Do nothing
-    }
-    
-    // MARK:- CRUD Functions
-    
-    //////////////////////////
-    // Create Data
-    func createFile(filename: String?, filedata: String?) {
-        guard let filename = filename, let filedata = filedata else {
-            print("Error createFile(): Empty data set")
-            return
-        }
-        guard let userId = authUI.auth?.currentUser?.uid else {
-            print("Error createFile(): User is not signed in.")
-            return
-        }
-        let file = File(uid: userId, name: filename, data: filedata)
-        let documentData: [String: Any] = file.getDictionaryData()
-        var docRef: DocumentReference? = nil
-        docRef = db.collection("files").addDocument(data: documentData) { (error) in
-            if let error = error {
-                print("Error adding file: \(error)")
-            } else {
-                print("File added with ID: \(docRef!.documentID)")
-            }
-        }
-    }
-    
-    //////////////////////////
-    // Read Data
-    func readData() {
-        guard let uid = authUI.auth?.currentUser?.uid else { return }
-        let doc = db.collection("users").document(uid)
-        print("DOC: " + doc.debugDescription)
-        doc.getDocument(completion: { (querySnapshot, error) in
-            if let error = error {
-                print("ERROR: " + error.localizedDescription)
-            } else {
-                if let id = querySnapshot?.documentID {
-                    print("ID: " + id)
-                    self.userId = id
-                }
-            }
-        })
-    }
-    
-    func readMoreData() {
-        db.collection("files").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("ERROR GETTING DOCUMENTS: \(err)")
-            } else {
-                self.files = [File]()
-                for document in querySnapshot!.documents {
-                    print("DOCUMENT: \(document.documentID) => \(document.data())")
-                    let data: [String: Any] = document.data()                    
-                    print("FILENAME: \(String(describing: data["filename"]))")
-                    let file = File(data: data)
-                    print(file.description)
-                    self.files.append(file)
-                }
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    //////////////////////////
-    // Update Data
-    @IBAction func updateData() {
-        guard let userId = self.userId else { return }
-        db.collection("users").document(userId).updateData([
-            "userId": authUI.auth?.currentUser?.uid ?? "",
-            "email": authUI.auth?.currentUser?.email ?? "",
-            "name": authUI.auth?.currentUser?.displayName ?? "Anonymous"
-        ]) { (error) in
-            if let error = error {
-                print("ERROR: " + error.localizedDescription)
-            } else {
-                print("Data saved!.")
-            }
-        }
     }
     
     ////////////////////////////////////
@@ -222,7 +166,10 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
         if section == 0 {
             return 1
         } else {
-            return files.count
+            if isSignedIn() {
+                return FileManager.sharedInstance.fileCount
+            }
+            return 0
         }
     }
     
@@ -243,7 +190,8 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             return cell
         } else { // Files Section
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)
-            cell.textLabel?.text = self.files[indexPath.row].filename
+            let file = FileManager.sharedInstance.getFile(at: indexPath.row)
+            cell.textLabel?.text = file.filename
             return cell
         }
     }
@@ -259,12 +207,13 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             dest.email = email
             dest.username = username
         } else if segue.identifier == Constants.newFileSegueId {
-            //let dest = segue.destination.childViewControllers.first as? UpdateFileTableViewController
+            // do nothing
         } else if segue.identifier == Constants.fileDetailSegueId {
             if let row = self.tableView.indexPathForSelectedRow?.row {
+                let file = FileManager.sharedInstance.getFile(at: row)
                 let dest = segue.destination as! FileDetailTableViewController
-                dest.filename = files[row].filename
-                dest.fileData = files[row].filedata
+                dest.filename = file.filename
+                dest.fileData = file.filedata
             }
         }
     }
