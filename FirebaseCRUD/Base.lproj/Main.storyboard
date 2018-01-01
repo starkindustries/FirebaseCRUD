@@ -36,7 +36,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="Pfz-3k-e2R" kind="show" identifier="userDetailSegue" id="kxg-oA-7MD"/>
+                                    <segue destination="Pfz-3k-e2R" kind="show" identifier="UserDetailSegue" id="kxg-oA-7MD"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="FileCell" textLabel="HK8-ig-YTR" style="IBUITableViewCellStyleDefault" id="rQd-Ug-bpb">
@@ -56,7 +56,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="cnF-yw-2Ka" kind="show" identifier="fileDetailSegue" id="8p8-Gd-6Zc"/>
+                                    <segue destination="cnF-yw-2Ka" kind="show" identifier="FileDetailSegue" id="8p8-Gd-6Zc"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -80,7 +80,7 @@
         <!--File Detail Table View Controller-->
         <scene sceneID="bnN-3p-yEE">
             <objects>
-                <tableViewController id="cnF-yw-2Ka" customClass="FileDetailTableViewController" customModule="FirebaseCRUD" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FileDetailTableViewController" id="cnF-yw-2Ka" customClass="FileDetailTableViewController" customModule="FirebaseCRUD" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="sge-mc-jDd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -269,7 +269,7 @@
                         <sections>
                             <tableViewSection headerTitle="Filename" id="Uuo-1h-PO4">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="vOp-ve-hvb">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="44" id="vOp-ve-hvb">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vOp-ve-hvb" id="7Me-pM-czI">
@@ -321,7 +321,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="File ID" id="hSv-bF-SmU">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="pIH-w7-5RX" style="IBUITableViewCellStyleDefault" id="rtp-Nq-Ahy">
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="pIH-w7-5RX" rowHeight="44" style="IBUITableViewCellStyleDefault" id="rtp-Nq-Ahy">
                                         <rect key="frame" x="0.0" y="311.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rtp-Nq-Ahy" id="EqA-Mh-d3M">

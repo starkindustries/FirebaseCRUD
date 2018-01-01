@@ -146,7 +146,8 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             print("Error createFile(): User is not signed in.")
             return
         }
-        let documentData: [String: Any] = ["userId": userId, "filename": filename, "data": filedata]
+        let file = File(uid: userId, name: filename, data: filedata)
+        let documentData: [String: Any] = file.getDictionaryData()
         var docRef: DocumentReference? = nil
         docRef = db.collection("files").addDocument(data: documentData) { (error) in
             if let error = error {
@@ -259,6 +260,12 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate {
             dest.username = username
         } else if segue.identifier == Constants.newFileSegueId {
             //let dest = segue.destination.childViewControllers.first as? UpdateFileTableViewController
+        } else if segue.identifier == Constants.fileDetailSegueId {
+            if let row = self.tableView.indexPathForSelectedRow?.row {
+                let dest = segue.destination as! FileDetailTableViewController
+                dest.filename = files[row].filename
+                dest.fileData = files[row].filedata
+            }
         }
     }
     
