@@ -92,7 +92,13 @@ class FileManager {
             self.files = documents.map { (document) -> File in
                 return File(data: document.data(), id: document.documentID)
             }
-            self.reloadTableDelegate?.reloadTable()
+            print("AddFileListener: About to reload table!")
+            if let deletedFile = self.deletedFileIndex {
+                self.reloadTableDelegate?.deleteFile(at: deletedFile)
+                self.deletedFileIndex = nil
+            } else {
+                self.reloadTableDelegate?.reloadTable()
+            }
         }
     }
     
@@ -125,6 +131,32 @@ class FileManager {
             } else {
                 print("Data saved!")
             }
-        }        
+        }
+    }
+    
+    //////////////////////////
+    // Delete Data
+    // https://firebase.google.com/docs/firestore/manage-data/delete-data
+    
+    var deletedFileIndex: Int?
+    
+    public func deleteFile(at index: Int) {
+        let id = files[index].fileId
+        deleteFile(fileId: id)
+        deletedFileIndex = index
+    }
+    
+    private func deleteFile(fileId: String?) {
+        guard let fileId = fileId else {
+            print("deleteFile(): No file id provided.")
+            return
+        }
+        db.collection("files").document(fileId).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
     }
 }

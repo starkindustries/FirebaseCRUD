@@ -13,6 +13,7 @@ import FirebaseGoogleAuthUI
 
 protocol ReloadTableProtocol {
     func reloadTable()
+    func deleteFile(at index: Int)
 }
 
 class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTableProtocol {
@@ -195,6 +196,34 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
             cell.textLabel?.text = file.filename
             return cell
         }
+    }
+    
+    
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        if indexPath.section == 0 {
+            return false
+        }
+        return true
+    }
+    
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            print("DELETING ROW: \(indexPath.description)")
+            FileManager.sharedInstance.deleteFile(at: indexPath.row)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
+    // ReloadTableProtocol
+    func deleteFile(at index: Int) {
+        print("ReloadTableProtocol: deleteFile()")
+        let indexPath = IndexPath(row: index, section: 1)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
     // MARK: - Navigation
