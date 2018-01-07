@@ -82,7 +82,10 @@ class FileManager {
     
     // File Listener
     func addFileListener() {
-        guard let userId = userId else { fatalError() }
+        guard let userId = userId else {
+            print("AddFileListener(): User not logged in.")
+            return
+        }
         fileListener = db.collection("files").whereField("userId", isEqualTo: userId).addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
                 print("Error fetching documents: \(error!)")

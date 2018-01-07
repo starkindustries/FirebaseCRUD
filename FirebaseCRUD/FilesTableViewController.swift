@@ -35,6 +35,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         // Set the providers
         let providers: [FUIAuthProvider] = [FUIGoogleAuth()]
         authUI?.providers = providers
+        authUI?.isSignInWithEmailHidden = true
         
         // Set TableReloadDelegate. This lets FileManager reload this table when changes occur.
         FileManager.sharedInstance.reloadTableDelegate = self
