@@ -11,6 +11,7 @@ import Foundation
 struct Constants {
     static let userInfoCellId = "UserInfoCell"
     static let fileCellId = "FileCell"
+    static let fileDataCellId = "FileDataCell"
     static let fileDetailSegueId = "FileDetailSegue"
     static let userDetailSegueId = "UserDetailSegue"
     static let newFileSegueId = "AddNewFileSegue"

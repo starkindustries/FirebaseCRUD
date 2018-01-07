@@ -45,20 +45,23 @@ class FileDetailTableViewController: UITableViewController {
         if indexPath.section == 0 {
             return 44
         } else {
-            return 200
+            return 300
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)
         // Configure the cell...
         if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)
             cell.textLabel?.text = filename
+            return cell
         } else {
-            cell.textLabel?.text = fileData
+            if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileDataCellId, for: indexPath) as? FileDataTableViewCell {
+                cell.textView.text = fileData
+                return cell
+            }
         }
-        
-        return cell
+        fatalError("cellForRowAt: Error loading tableViewCell")
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
