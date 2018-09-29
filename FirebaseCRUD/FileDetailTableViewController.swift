@@ -75,7 +75,7 @@ class FileDetailTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == Constants.editFileSegueId {
-            let dest = segue.destination.childViewControllers.first as! UpdateFileTableViewController
+            let dest = segue.destination.children.first as! UpdateFileTableViewController
             dest.fileId = fileId
             dest.filename = filename
             dest.filedata = fileData
