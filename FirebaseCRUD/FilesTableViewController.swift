@@ -17,19 +17,13 @@ protocol ReloadTableProtocol {
 }
 
 class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTableProtocol {
-        
-    var authUI: FUIAuth!
-    
-    var username: String?
-    var email: String?
-    var userId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         // Initialize FirebaseAuth        
-        authUI = FUIAuth.defaultAuthUI()
+        let authUI = FUIAuth.defaultAuthUI()
         // You need to adopt a FUIAuthDelegate protocol to receive callback
         authUI?.delegate = self
         // Set the providers
@@ -39,16 +33,6 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         
         // Set TableReloadDelegate. This lets FileManager reload this table when changes occur.
         FileManager.sharedInstance.reloadTableDelegate = self
-        
-        // Check if user is already signed in
-        if let user = Auth.auth().currentUser {
-            // User logged in
-            userId = user.uid
-            email = user.email
-            username = user.displayName
-            
-            FileManager.sharedInstance.addFileListener()
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,7 +47,6 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        FileManager.sharedInstance.removeFileListener()
     }
     
     // protocol ReloadTableProtocol
@@ -76,14 +59,10 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
         print("FIREBASE AUTH authUI(_:,didSignInWith:)")
         // handle user and error as necessary
-        guard let uid = user?.uid else { return }
-        
-        userId = uid
-        email = authUI.auth?.currentUser?.email
-        username = authUI.auth?.currentUser?.displayName
+        guard let user = user else { return }
         
         // Add a new document for the user
-        FileManager.sharedInstance.addNewUser(userId: userId, email: email, name: username)
+        FileManager.sharedInstance.addNewUser(userId: user.uid, email: user.email, name: user.displayName)
         FileManager.sharedInstance.addFileListener()
         
         reloadTable()
@@ -97,34 +76,27 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     }
     
     func checkSignIn() {
-        print("FIREBASE AUTH signIn()")
-        if let user = Auth.auth().currentUser {
+        if let _ = Auth.auth().currentUser {
             // User logged in
-            userId = user.uid
-            email = user.email
-            username = user.displayName
             FileManager.sharedInstance.addFileListener()
         } else {
             // User Not logged in. Present AuthUI controller
-            let authViewController = authUI.authViewController()
-            self.present(authViewController, animated: true){
-                print("AUTH VIEW PRESENTED!")
+            if let authViewController = FUIAuth.defaultAuthUI()?.authViewController() {
+                self.present(authViewController, animated: true){
+                    print("Auth view presented")
+                }
             }
         }
     }
     
     // Sign out
     @IBAction func signOut(segue: UIStoryboardSegue) {
-        print("SIGNING OUT!")
         do {
-            try authUI.signOut()
-            email = "Tap to sign in"
-            userId = ""
-            username = ""
-            self.tableView.reloadData()
+            try Auth.auth().signOut()
             FileManager.sharedInstance.removeFileListener()
+            print("FilesTableViewController signOut(): Sign out successful")
         } catch {
-            print("ERROR: " + error.localizedDescription)
+            print("FilesTableViewController signOut() Error: " + error.localizedDescription)
         }
     }
     
@@ -141,15 +113,15 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     // MARK:- @IBActions
     
     @IBAction func updateFile(segue: UIStoryboardSegue) {
-        print("UPDATE FILE GOT HERE!")
         let source = segue.source as! UpdateFileTableViewController
         let filename = source.filenameTextField?.text
         let filedata = source.filedataTextView?.text
         if let id = source.fileId {
             // update file
-            print("Updating File: name[\(filename)] data[\(filedata)]")
+            print("Updating file: name[\(filename)] data[\(filedata)]")
             FileManager.sharedInstance.updateFile(fileId: id, filename: filename, filedata: filedata)
         } else {
+            print("Create file: name[\(filename)] data[\(filedata)]")
             FileManager.sharedInstance.createFile(filename: filename, filedata: filedata)
         }
     }
@@ -188,7 +160,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         // User Info Section
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.userInfoCellId, for: indexPath)
-            cell.textLabel?.text = email
+            cell.textLabel?.text = Auth.auth().currentUser?.email
             return cell
         } else { // Files Section
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.fileCellId, for: indexPath)
@@ -212,7 +184,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            print("DELETING ROW: \(indexPath.description)")
+            print("Deleting row: \(indexPath.description)")
             FileManager.sharedInstance.deleteFile(at: indexPath.row)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -233,9 +205,6 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         // Pass the selected object to the new view controller.
         if segue.identifier == Constants.userDetailSegueId {
             let dest = segue.destination as! UserDetailTableViewController
-            dest.userId = userId
-            dest.email = email
-            dest.username = username
         } else if segue.identifier == Constants.newFileSegueId {
             // do nothing
         } else if segue.identifier == Constants.fileDetailSegueId {

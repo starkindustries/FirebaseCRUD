@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class UserDetailTableViewController: UITableViewController {
     
@@ -14,16 +15,11 @@ class UserDetailTableViewController: UITableViewController {
     @IBOutlet weak var emailCell: UITableViewCell?
     @IBOutlet weak var userIdCell: UITableViewCell?
     
-    var username: String?
-    var email: String?    
-    var userId: String?
-    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        usernameCell?.textLabel?.text = username
-        emailCell?.textLabel?.text = email
-        userIdCell?.textLabel?.text = userId
+        super.viewDidLoad()        
+        usernameCell?.textLabel?.text = Auth.auth().currentUser?.displayName
+        emailCell?.textLabel?.text = Auth.auth().currentUser?.email
+        userIdCell?.textLabel?.text = Auth.auth().currentUser?.uid
     }
     
     override func didReceiveMemoryWarning() {
