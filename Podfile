@@ -10,7 +10,6 @@ target 'FirebaseCRUD' do
   pod 'Firebase/Firestore'  
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Google'
-  pod 'FirebaseUI/Facebook'
 
   target 'FirebaseCRUDTests' do
     inherit! :search_paths

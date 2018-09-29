@@ -29,7 +29,6 @@ class FileManager {
         return files.count
     }
     private var files = [File]()
-    var userId: String?
     
     var reloadTableDelegate: ReloadTableProtocol?
     
@@ -60,7 +59,7 @@ class FileManager {
             print("Error createFile(): Empty data set")
             return
         }
-        guard let userId = userId else {
+        guard let userId = Auth.auth().currentUser?.uid else {
             print("Error createFile(): User is not signed in.")
             return
         }
@@ -82,7 +81,7 @@ class FileManager {
     
     // File Listener
     func addFileListener() {
-        guard let userId = userId else {
+        guard let userId = Auth.auth().currentUser?.uid else {
             print("AddFileListener(): User not logged in.")
             return
         }
@@ -97,9 +96,11 @@ class FileManager {
             }
             print("AddFileListener: About to reload table!")
             if let deletedFile = self.deletedFileIndex {
+                // Delete the file instead of reloading to allow for the nice deletion animation
                 self.reloadTableDelegate?.deleteFile(at: deletedFile)
                 self.deletedFileIndex = nil
             } else {
+                // reload table to update the data
                 self.reloadTableDelegate?.reloadTable()
             }
         }
@@ -120,7 +121,7 @@ class FileManager {
     // To create or overwrite a single document, use the set() method:
     // https://firebase.google.com/docs/firestore/manage-data/add-data#set_a_document
     public func updateFile(fileId: String?, filename: String?, filedata: String?) {
-        guard let userId = self.userId else {
+        guard let userId = Auth.auth().currentUser?.uid else {
             print("Error updateFile(_:): User is not signed in.")
             return
         }

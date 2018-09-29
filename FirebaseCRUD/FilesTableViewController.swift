@@ -47,7 +47,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
             email = user.email
             username = user.displayName
             
-            FileManager.sharedInstance.userId = userId
+            FileManager.sharedInstance.addFileListener()
         }
     }
     
@@ -59,7 +59,6 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FileManager.sharedInstance.addFileListener()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -83,10 +82,9 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         email = authUI.auth?.currentUser?.email
         username = authUI.auth?.currentUser?.displayName
         
-        FileManager.sharedInstance.userId = userId
-        
         // Add a new document for the user
         FileManager.sharedInstance.addNewUser(userId: userId, email: email, name: username)
+        FileManager.sharedInstance.addFileListener()
         
         reloadTable()
     }
@@ -105,8 +103,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
             userId = user.uid
             email = user.email
             username = user.displayName
-            
-            FileManager.sharedInstance.userId = userId
+            FileManager.sharedInstance.addFileListener()
         } else {
             // User Not logged in. Present AuthUI controller
             let authViewController = authUI.authViewController()
@@ -125,6 +122,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
             userId = ""
             username = ""
             self.tableView.reloadData()
+            FileManager.sharedInstance.removeFileListener()
         } catch {
             print("ERROR: " + error.localizedDescription)
         }
@@ -149,6 +147,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         let filedata = source.filedataTextView?.text
         if let id = source.fileId {
             // update file
+            print("Updating File: name[\(filename)] data[\(filedata)]")
             FileManager.sharedInstance.updateFile(fileId: id, filename: filename, filedata: filedata)
         } else {
             FileManager.sharedInstance.createFile(filename: filename, filedata: filedata)

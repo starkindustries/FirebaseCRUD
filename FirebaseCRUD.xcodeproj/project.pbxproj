@@ -67,6 +67,7 @@
 		235AF4201FF8914A00B4F981 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		236D6D8E1FFA270E00016EC2 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		236D6D922001DEA100016EC2 /* FileDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDataTableViewCell.swift; sourceTree = "<group>"; };
+		236D6D9520022CDB00016EC2 /* FirebaseCRUD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FirebaseCRUD.entitlements; sourceTree = "<group>"; };
 		2B103AD5AF9C3E0AB4BF9B43 /* Pods-FirebaseCRUD.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseCRUD.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseCRUD/Pods-FirebaseCRUD.debug.xcconfig"; sourceTree = "<group>"; };
 		32208CD89F0984707A9C311C /* Pods_FirebaseCRUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseCRUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B2A10C5624C8388243BC5C3 /* Pods-FirebaseCRUDUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseCRUDUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseCRUDUITests/Pods-FirebaseCRUDUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -130,6 +131,7 @@
 		232140A71FF0CBC100701128 /* FirebaseCRUD */ = {
 			isa = PBXGroup;
 			children = (
+				236D6D9520022CDB00016EC2 /* FirebaseCRUD.entitlements */,
 				232140AC1FF0CBC100701128 /* Main.storyboard */,
 				232140A81FF0CBC100701128 /* AppDelegate.swift */,
 				232140D81FF3A1EB00701128 /* FilesTableViewController.swift */,
@@ -220,8 +222,6 @@
 				232140B51FF0CBC200701128 /* Sources */,
 				232140B61FF0CBC200701128 /* Frameworks */,
 				232140B71FF0CBC200701128 /* Resources */,
-				50928B125BA74BB5754DAFDC /* [CP] Embed Pods Frameworks */,
-				392284CDC9BAB030D704CC55 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -241,8 +241,6 @@
 				232140C01FF0CBC200701128 /* Sources */,
 				232140C11FF0CBC200701128 /* Frameworks */,
 				232140C21FF0CBC200701128 /* Resources */,
-				5C63A340AA956CB3A3D77AC5 /* [CP] Embed Pods Frameworks */,
-				C36930BBD2B92BA51454212B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,6 +265,11 @@
 					232140A41FF0CBC100701128 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					232140B81FF0CBC200701128 = {
 						CreatedOnToolsVersion = 9.2;
@@ -336,63 +339,19 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUD/Pods-FirebaseCRUD-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUD/Pods-FirebaseCRUD-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		392284CDC9BAB030D704CC55 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUDTests/Pods-FirebaseCRUDTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		50928B125BA74BB5754DAFDC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUDTests/Pods-FirebaseCRUDTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5C63A340AA956CB3A3D77AC5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUDUITests/Pods-FirebaseCRUDUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AF9F937A769055AAED4C2DF5 /* [CP] Embed Pods Frameworks */ = {
@@ -402,10 +361,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUD/Pods-FirebaseCRUD-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -419,10 +375,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -473,21 +426,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C36930BBD2B92BA51454212B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseCRUDUITests/Pods-FirebaseCRUDUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C8FE066F12D1B14AB04D8DB7 /* [CP] Check Pods Manifest.lock */ = {
@@ -690,6 +628,7 @@
 			baseConfigurationReference = 2B103AD5AF9C3E0AB4BF9B43 /* Pods-FirebaseCRUD.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FirebaseCRUD/FirebaseCRUD.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S76F4E24H2;
 				INFOPLIST_FILE = FirebaseCRUD/Info.plist;
@@ -706,6 +645,7 @@
 			baseConfigurationReference = C57808552D59EAF6C3FAD5E2 /* Pods-FirebaseCRUD.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FirebaseCRUD/FirebaseCRUD.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S76F4E24H2;
 				INFOPLIST_FILE = FirebaseCRUD/Info.plist;
