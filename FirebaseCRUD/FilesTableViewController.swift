@@ -118,10 +118,10 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         let filedata = source.filedataTextView?.text
         if let id = source.fileId {
             // update file
-            print("Updating file: name[\(filename)] data[\(filedata)]")
+            print("Updating file: name[\(filename ?? "")] data[\(filedata ?? "")]")
             FileManager.sharedInstance.updateFile(fileId: id, filename: filename, filedata: filedata)
         } else {
-            print("Create file: name[\(filename)] data[\(filedata)]")
+            print("Create file: name[\(filename ?? "")] data[\(filedata ?? "")]")
             FileManager.sharedInstance.createFile(filename: filename, filedata: filedata)
         }
     }
@@ -204,7 +204,7 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == Constants.userDetailSegueId {
-            let dest = segue.destination as! UserDetailTableViewController
+            // do nothing
         } else if segue.identifier == Constants.newFileSegueId {
             // do nothing
         } else if segue.identifier == Constants.fileDetailSegueId {
