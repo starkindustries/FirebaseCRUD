@@ -8,8 +8,7 @@
 
 import UIKit
 import Firebase
-import FirebaseAuthUI
-import FirebaseGoogleAuthUI
+import FirebaseUI
 
 protocol ReloadTableProtocol {
     func reloadTable()
@@ -56,16 +55,32 @@ class FilesTableViewController: UITableViewController, FUIAuthDelegate, ReloadTa
     
     ////////////////////////////////////////
     // MARK:- FUIAuthDelegate and Sign in and out functions
-    func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
+    
+    // ** This function is deprecated **
+    /***********************
+     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
+     print("FIREBASE AUTH authUI(_:,didSignInWith:)")
+     // handle user and error as necessary
+     guard let user = user else { return }
+     
+     // Add a new document for the user
+     FileManager.sharedInstance.addNewUser(userId: user.uid, email: user.email, name: user.displayName)
+     FileManager.sharedInstance.addFileListener()
+     
+     reloadTable()
+     }*/
+    
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        // handle user (`authDataResult.user`) and error as necessary
         print("FIREBASE AUTH authUI(_:,didSignInWith:)")
         // handle user and error as necessary
-        guard let user = user else { return }
+        guard let user = authDataResult?.user else { return }
         
         // Add a new document for the user
         FileManager.sharedInstance.addNewUser(userId: user.uid, email: user.email, name: user.displayName)
         FileManager.sharedInstance.addFileListener()
         
-        reloadTable()
+        self.reloadTable()
     }
     
     // Sign in

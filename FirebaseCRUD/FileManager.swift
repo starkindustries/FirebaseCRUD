@@ -18,7 +18,10 @@ class FileManager {
     // This prevents others from using the default '()' initializer for this class.
     private init() {
         // Initialize Firestore
-        db = Firestore.firestore()        
+        db = Firestore.firestore()
+        let settings = db.settings
+        settings.areTimestampsInSnapshotsEnabled = true
+        db.settings = settings
     }
     
     // Vars

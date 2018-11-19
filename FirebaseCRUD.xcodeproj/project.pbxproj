@@ -15,6 +15,7 @@
 		232140C91FF0CBC200701128 /* FirebaseCRUDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232140C81FF0CBC200701128 /* FirebaseCRUDUITests.swift */; };
 		232140D71FF0CC2A00701128 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 232140D61FF0CC2A00701128 /* GoogleService-Info.plist */; };
 		232140D91FF3A1EB00701128 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232140D81FF3A1EB00701128 /* FilesTableViewController.swift */; };
+		2325E1D7219E8B8600F1F993 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 2325E1D6219E8B8600F1F993 /* Podfile */; };
 		235AF4191FF73C3B00B4F981 /* FileDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235AF4181FF73C3B00B4F981 /* FileDetailTableViewController.swift */; };
 		235AF41B1FF7619700B4F981 /* UserDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235AF41A1FF7619700B4F981 /* UserDetailTableViewController.swift */; };
 		235AF41D1FF7643000B4F981 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235AF41C1FF7643000B4F981 /* Constants.swift */; };
@@ -60,6 +61,7 @@
 		232140CA1FF0CBC200701128 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		232140D61FF0CC2A00701128 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		232140D81FF3A1EB00701128 /* FilesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewController.swift; sourceTree = "<group>"; };
+		2325E1D6219E8B8600F1F993 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		235AF4181FF73C3B00B4F981 /* FileDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailTableViewController.swift; sourceTree = "<group>"; };
 		235AF41A1FF7619700B4F981 /* UserDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailTableViewController.swift; sourceTree = "<group>"; };
 		235AF41C1FF7643000B4F981 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		232140A71FF0CBC100701128 /* FirebaseCRUD */ = {
 			isa = PBXGroup;
 			children = (
+				2325E1D6219E8B8600F1F993 /* Podfile */,
 				236D6D9520022CDB00016EC2 /* FirebaseCRUD.entitlements */,
 				232140AC1FF0CBC100701128 /* Main.storyboard */,
 				232140A81FF0CBC100701128 /* AppDelegate.swift */,
@@ -311,6 +314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2325E1D7219E8B8600F1F993 /* Podfile in Resources */,
 				232140B31FF0CBC100701128 /* LaunchScreen.storyboard in Resources */,
 				232140D71FF0CC2A00701128 /* GoogleService-Info.plist in Resources */,
 				232140B01FF0CBC100701128 /* Assets.xcassets in Resources */,
@@ -368,8 +372,10 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
@@ -382,8 +388,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
